@@ -1,0 +1,168 @@
+---
+title: "apache1"
+author: "Daniel"
+output: html_notebook
+---
+```{r}
+set.seed(1234)
+```
+
+#Analysing Logs
+
+Common Log Format:IP - - TIMESTAMP METHOD RESOURCE STATUS_CODE BYTES
+
+#Overview of data
+```{r}
+setwd("/home/danny")
+rawdata<- read.table("sample.log", header = FALSE)
+head(rawdata)
+```
+#Import Libraries
+```{r, message=FALSE}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(scales)
+library(stringr)
+library(DescTools)
+library(lubridate)
+library(formattable)
+library(rgeolocate)
+library(jsonlite)
+```
+Getting to know the data
+```{r}
+dim(rawdata)
+```
+```{r}
+str(rawdata)
+```
+#drop column 2, 3 and 9
+```{r}
+rawdata<- rawdata[ c(-2, -3, -9)]
+```
+#cleaning timestamp
+```{r}
+rawdata$timeStamp <- paste0(rawdata$V4, rawdata$V5)
+rawdata<- rawdata[ c(-2, -3)]
+rawdata$timeStamp<- dmy_hms(rawdata$timeStamp, tz= "UTC")
+head(rawdata)
+```
+Split V6
+```{r}
+rawdata<- separate(data = rawdata, col = V6, into = c("method", "resource"), sep = " ")
+```
+naming columns
+```{r}
+names(rawdata)<- c("ip", "method", "resource", "statusCode", "bytes" ,"mediaInfo", "timestamp")
+head(rawdata, 2)
+```
+drop mediaInfo
+```{r}
+log1<- rawdata[-6]
+```
+
+#Summary of data
+```{r}
+summary(log1)
+glimpse(log1)
+head(log1)
+```
+#method count
+```{r}
+methodCount<- log1 %>% select(method) %>% group_by(method) %>% summarise(count = n())
+
+formattable(methodCount, list( count = color_bar("steelblue")), align = 'l')
+
+methodCount
+```
+#top 10 IP
+```{r}
+top10IP<- log1 %>% select(ip) %>% group_by(ip) %>% summarise( count = n()) %>% arrange(desc(count)) %>% filter(count > 2400) 
+
+formattable(top10IP, list(count = color_bar("orange")), align = 'l')
+
+head(top10IP, 10)
+```
+#top 10 resource
+```{r}
+top10RESOURCE<- log1 %>% select(resource) %>% group_by(resource) %>% summarise(count = n()) %>% arrange( desc(count)) %>% filter(count > 4200)
+
+formattable(top10RESOURCE, list(count= color_bar("yellow")), align = 'l')
+
+head(top10RESOURCE, 10)
+```
+#status codes
+```{r}
+statusCode<- log1 %>% select(statusCode) %>% group_by(statusCode) %>% summarise(codes = n()) 
+
+formattable(statusCode, list(codes = color_bar("lightgreen")), align = 'l') 
+
+statusCode
+```
+#mean bytes
+```{r}
+log1$bytes<- as.numeric(log1$bytes)
+meanBytes<- log1 %>% select(bytes) %>% summarise(mean = mean(bytes))
+
+
+meanBytes
+```
+#Top bandwidith consumption
+```{r}
+rs<- log1 %>% select(resource, bytes) %>% group_by(resource)%>% arrange(desc(bytes)) 
+
+formattable(head(rs[!duplicated(rs$resource), ]), align = 'l')
+```
+
+#Number of hits of resource
+```{r}
+rs1<-log1 %>% select(resource) %>% group_by(resource) %>% summarise(count =n()) %>% arrange(desc(count))
+
+formattable(head(rs1, 10), list(count = color_bar("yellow")), align = 'l')
+```
+
+
+```{r}
+
+IPZ = as.list(top10IP$ip)
+kk<- c('91.121.195.22', '108.166.15.188', '98.139.134.96', '98.139.134.98', '98.139.134.97', '98.139.134.99', '199.21.99.109', '208.115.113.88', '72.14.199.57', '208.115.111.72')
+bait<-function(x){
+  for(reps in kk)
+    crazy= kk[1]
+    baby = db_ip(ip_addresses = crazy, '888b0e329e939d695a2b266451e1069a4dc71ead')
+    baby1 = ip_api(crazy, as_data_frame = TRUE, delay = FALSE)
+    
+    #print(baby1$country_name, baby1$latitude, baby1$longitude)
+  
+}
+
+bait(1)
+
+```
+
+```{r}
+t1<-db_ip(ip_addresses = kk[1], '888b0e329e939d695a2b266451e1069a4dc71ead')
+t2<-db_ip(ip_addresses = kk[2], '888b0e329e939d695a2b266451e1069a4dc71ead')
+
+t1
+t2
+
+```
+
+```{r}
+t11<-ip_api(kk[1:10], as_data_frame = TRUE, delay = FALSE)
+t22<-ip_api(kk[5], as_data_frame = TRUE, delay = FALSE)
+
+t11
+t22
+```
+
+
+
+
+
+
+
+
+

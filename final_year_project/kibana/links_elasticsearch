@@ -1,0 +1,107 @@
+https://www.hackzine.org/importing-apache-logs-in-elasticsearch.html
+https://www.digitalocean.com/community/tutorials/how-to-use-logstash-and-kibana-to-centralize-and-visualize-logs-on-ubuntu-14-04
+https://www.scaleway.com/docs/how-to-use-the-elk-stack-instant-apps/
+https://redgirraffe.com/blog/2016/08/30/logging-and-analysis-using-logstash-elasticsearch-and-kibana-part-4/
+http://blog.scottlogic.com/2014/12/19/elk-3-things-i-wish-id-known.html
+http://toodey.com/2015/07/21/log-analysis-using-logstash-redis-elasticsearch-kibana3-multinode-part-1/
+http://brewhouse.io/blog/2014/11/04/big-data-with-elk-stack.html
+
+
+rsyslog
+https://vexxhost.com/resources/tutorials/how-to-setup-remote-system-logging-with-rsyslog-on-ubuntu-14-04-lts/
+https://sematext.com/blog/2015/09/28/recipe-rsyslog-redis-logstash/
+
+https://serverfault.com/questions/771673/forwarding-specific-logs-rsyslog
+https://www.balabit.com/blog/how-to-parse-data-with-syslog-ng-store-in-elasticsearch-and-analyze-with-kibana/
+https://www.balabit.com/blog/logging-to-elasticsearch-made-simple-with-syslog-ng/
+
+https://blog.gufi.org/2016/02/15/elk-first-part/
+https://blog.gufi.org/2016/02/23/elk-stack-elasticsearch-logstash-and-kibana-on-freebsd-part-2/
+https://blog.gufi.org/2016/03/16/elk-stack-elasticsearch-logstash-and-kibana-on-freebsd-part-3/
+
+https://www.loggly.com/docs/python-syslog/
+
+
+
+================================================================================================================
+Apache kafka
+https://sematext.com/blog/2015/10/06/recipe-rsyslog-apache-kafka-logstash/
+http://pydigger.com/pypi/kafka-python
+https://codegists.com/code/kafka-python-producer-example/
+https://aws.amazon.com/blogs/big-data/real-time-stream-processing-using-apache-spark-streaming-and-apache-kafka-on-aws/
+
+apache kafka on windows
+http://programming-tips.in/kafka-set-up-apache-kafka-on-windows/
+https://community.boomi.com/docs/DOC-2856
+
+
+kafka remote access
+https://stackoverflow.com/questions/28146409/kafka-unable-to-send-a-message-to-a-remote-server-using-java
+https://www.rittmanmead.com/blog/2015/10/forays-into-kafka-01-logstash-transport-centralisation/
+https://stackoverflow.com/questions/29161313/issue-in-connecting-kafka-from-outside
+
+kafka spark interration
+https://spark.apache.org/docs/2.0.2/structured-streaming-kafka-integration.html
+
+logstash/elasticsearch
+https://www.linode.com/docs/databases/elasticsearch/visualizing-apache-webserver-logs-in-the-elk-stack-on-debian-8
+https://home.regit.org/2014/01/a-bit-of-logstash-cooking/
+
+ngix server
+https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-16-04
+https://www.linode.com/docs/websites/nginx/installing-nginx-on-ubuntu-12-04-lts-precise-pangolin
+https://www.liquidweb.com/kb/how-to-install-nginx-on-ubuntu-14-04-lts/
+
+=======================================================================================================================
+
+
+What is the difference between syslog, rsyslog and syslog-ng?
+
+
+
+Basically, they are all the same, in the way they all permit to log data from different types of systems in a central repository.
+
+But they are three different project, each project trying to improve the previous one with more reliability and functionnalities.
+
+The Syslog project was the very first project. It started in 1980. It is the root project to Syslog protocol. At this time Syslog is a very simple protocol. At the beginning it only supports UDP for transport, so that it does not guarantee the delivery of the messages.
+
+Next came syslog-ng in 1998. It extends basic syslog protocol with new features like :
+
+    content-based filtering
+    Logging directly into a database
+    TCP for transport
+    TLS encryption
+
+Next came Rsyslog in 2004. It extends syslog protocol with new features like :
+
+    RELP Protocol support
+    Buffered opration support
+
+Let's say that today they are three concurent projects that have grown separately upon versions, but also grown in parallel regarding what the neighbors was doing.
+
+I personally think that today syslog-ng is the reference in most cases, as it is the most mature project offering the main features you may need, in addition to an easy and comprehensive setup and configuration.
+---------------------------------------------------------------------------------------------------------------------------------
+These are 3 different kind of log managers : it enables your system to collect filter, and transmit/store logs.
+
+    Syslog (daemon also named sysklogd) is the default LM in common Linux distributions. Light but not very flexible, you can redirect log flux sorted by facility and severity to files and over network (TCP, UDP).
+
+    rsyslog is an "advanced" version of sysklogd where the config file remains the same (you can copy a syslog.conf file directly into rsyslog.conf and it works) ; but you have a lot of new cool stuff coming with it :
+        You can listen to TCP/UDP/... connections, with restrictions (ports, Source IPs)
+        You can load a lot of modules
+        You can discriminate the log filtering by program, source, message, pid etc. (for instance, each message tagged with the message "connexion closed" to the file closed.log)
+        You can discard message after one or more rules Visit http://www.rsyslog.com which is very good indeed
+
+    Syslog-ng is "Next-Gen". I think it's the best way to manage logs : everything is object (source, destination, filter, and the very forwarding rule) and the syntax is clear. I doubt in terms of functionality that rsyslog and syslog-ng are different.
+
+**********************************************************************************************************************************
+***************************************************************************************************************************************
+
+
+Research
+
+http://www.linux-magazine.com/Online/Features/Consolidating-Logs-with-Logstash
+https://ianunruh.com/2014/05/monitor-everything-part-2.html
+http://www.cyberciti.biz/faq/linux-log-files-location-and-how-do-i-view-logs-files/
+http://www.benjiegillam.com/2010/12/backup-your-logs-to-s3/
+http://rmoff.net/2016/04/12/decoupling-the-data-pipeline-with-kafka-a-very-simple-real-life-example/
+
