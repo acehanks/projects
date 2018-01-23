@@ -1,1 +1,1 @@
-Using Scrapy to scrape gemfive.com.my for mobile phones and associated prices.
+Using Scrapy to scrape gemfive.com.my for mobile phones, brand and price. The scraped data is in .csv in this folder
