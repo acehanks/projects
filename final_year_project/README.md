@@ -1,4 +1,4 @@
-#H1 Summary
+Summary:
 
 This folder contains the project files, notebooks and images from my final year project.
 
