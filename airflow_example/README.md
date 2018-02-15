@@ -3,7 +3,7 @@
 This is a simple airflow project illustrating some of the capabilities of the software.
 
 The DAG of interest is trip_dag. It runs three python scripts on an interval of 40 minutes every hour.  Also included is a dummy task and 
-obtaining the data via a bash command.
+obtaining the current date via a bash command.
 
 The python scripts return a welcome message to screen "Hello World", retrieve the current Bitcoin price (USD) from [coindesk](https://www.coindesk.com/) api and gets the current USD/MYR and USD/SGD forex rates from [cuurencylayer](https://currencylayer.com/) api.
 
